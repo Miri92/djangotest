@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+	<h3>Your ToDo list</h3>
+		<hr>
+
+		<form action="/addTodo" method="post">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="">Todo title</label>
+				<input type="text" name="title" class="form-control">
+			</div>
+			<button type="submit" class="btn btn-primary">Add</button>
+		</form>
+
+        {% if todos %}
+		<table class="table">
+			{% for todo in todos %}
+			<tr>
+				<td>{{todo.id}}</td>
+				<td><a href="/todo/detail/{{todo.id}}">{{todo.title}}</a></td>
+				<td>
+					{% if todo.completed %}
+				   	 	done
+					{% else %}
+						is not done
+					{% endif %}
+			    </td>
+				<td><a href="/todo/update/{{todo.id}}" class="btn btn-success">Update</a></td>
+				<td><a href="/todo/delete/{{todo.id}}" class="btn btn-danger">Remove</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% else %}
+			<div class="alert alert-danger">Not found</div>
+		{% endif %}
+
+		{% if get_shared %}
+		<h3>You have share Todos</h3>
+		<table class="table">
+			{% for shared in get_shared %}
+			<tr>
+				<td>{{shared.todo.first.id}}</td>
+				<td><a href="/todo/detail/{{shared.todo.first.id}}">{{shared.todo.first.title}}</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% endif %}
+{% endblock %}

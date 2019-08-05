@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    	
+<h3>ToDo list</h3>
+		<p>{{number1}}</p>
+		<hr>
+
+		<form action="addTodo" method="post">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="">Todo title</label>
+				<input type="text" name="title" class="form-control">
+			</div>
+			<button type="submit" class="btn btn-primary">Add</button>
+		</form>
+{% endblock %}

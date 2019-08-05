@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+<h3>Detail</h3>
+
+
+<div class="row">
+	<div class="col-md-8">
+		<h2>{{todo.id}}</h2>
+	</div>
+	<div class="col-md-4">
+		<div class="well">
+			<h3>Sahere this todo</h3>
+			<form action="{% url 'shareTodo'  %}" method="POST">
+				{% csrf_token %}
+				<div class="form-group">
+					<label for="">User name</label>
+					<div class="input-group">
+						<input type="text" name="nameoremail" class="form-control" value="{{ nameOrEmail }}">
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-primary">share</button>
+						</span>
+					</div>
+
+					<input type="hidden" name="todo_id" value="{{todo.id}}">
+					
+				</div>
+			</form>
+		</div>
+
+		<!-- shared list -->
+		{% if todo.shared_set.all %}
+		<div class="well">
+			<h3>This Todo Shared with</h3>
+			<ul>
+				{% for shared in todo.shared_set.all %}
+				<li>{{ shared.shared_with }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+		
+		{% endif %}
+	</div>
+</div>
+		
+{% endblock %}
