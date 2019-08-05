@@ -41,7 +41,7 @@ services:
     env_file: .env
     command: celery --app=app.celery:app worker -B --loglevel=INFO
     volumes:
-      - .:/code
+      - ./app:/code
     links:
       - redis
       - db
